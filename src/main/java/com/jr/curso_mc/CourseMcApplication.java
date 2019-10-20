@@ -8,9 +8,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.jr.curso_mc.domain.Category;
+import com.jr.curso_mc.domain.City;
 import com.jr.curso_mc.domain.Product;
+import com.jr.curso_mc.domain.State;
 import com.jr.curso_mc.repositories.CategoryRepository;
+import com.jr.curso_mc.repositories.CityRepository;
 import com.jr.curso_mc.repositories.ProductRepository;
+import com.jr.curso_mc.repositories.StateRepository;
 
 @SpringBootApplication
 public class CourseMcApplication implements CommandLineRunner {
@@ -20,7 +24,12 @@ public class CourseMcApplication implements CommandLineRunner {
 	
 	@Autowired
 	private ProductRepository productRepository;
-
+	
+	@Autowired
+	private CityRepository cityRepository;
+	
+	@Autowired
+	private StateRepository stateRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(CourseMcApplication.class, args);
@@ -45,6 +54,20 @@ public class CourseMcApplication implements CommandLineRunner {
 		
 		categoryRepository.saveAll(Arrays.asList(cat1, cat2));
 		productRepository.saveAll(Arrays.asList(p1, p2, p3));
+		
+		State sta1 = new State(null, "Minas Gerais");
+		State sta2 = new State(null, "São Paulo");
+		
+		City c1 = new City(null, "Urbelândia", sta1);
+		City c2 = new City(null, "São Paulo", sta2);
+		City c3 = new City(null, "Campinas", sta2);
+		
+		sta1.getCities().addAll(Arrays.asList(c1));
+		sta1.getCities().addAll(Arrays.asList(c2, c3));
+		
+		stateRepository.saveAll(Arrays.asList(sta1, sta2));
+		cityRepository.saveAll(Arrays.asList(c1, c2, c3));
+		
 	}
 
 }
