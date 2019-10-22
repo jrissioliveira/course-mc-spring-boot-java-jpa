@@ -1,5 +1,6 @@
 package com.jr.curso_mc;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,16 +9,23 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.jr.curso_mc.domain.Address;
+import com.jr.curso_mc.domain.CardPayment;
 import com.jr.curso_mc.domain.Category;
 import com.jr.curso_mc.domain.City;
 import com.jr.curso_mc.domain.Client;
+import com.jr.curso_mc.domain.InvoicePayment;
+import com.jr.curso_mc.domain.Order_;
+import com.jr.curso_mc.domain.Payment;
 import com.jr.curso_mc.domain.Product;
 import com.jr.curso_mc.domain.State;
 import com.jr.curso_mc.domain.enums.ClientType;
+import com.jr.curso_mc.domain.enums.PaymentStatus;
 import com.jr.curso_mc.repositories.AddressRepository;
 import com.jr.curso_mc.repositories.CategoryRepository;
 import com.jr.curso_mc.repositories.CityRepository;
 import com.jr.curso_mc.repositories.ClientRepository;
+import com.jr.curso_mc.repositories.OrderRepository;
+import com.jr.curso_mc.repositories.PaymentRepository;
 import com.jr.curso_mc.repositories.ProductRepository;
 import com.jr.curso_mc.repositories.StateRepository;
 
@@ -41,6 +49,12 @@ public class CourseMcApplication implements CommandLineRunner {
 	
 	@Autowired
 	private AddressRepository addressRepository;
+
+	@Autowired
+	private OrderRepository orderRepository;
+
+	@Autowired
+	private PaymentRepository paymentRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(CourseMcApplication.class, args);
@@ -90,6 +104,22 @@ public class CourseMcApplication implements CommandLineRunner {
 		
 		clientRepository.saveAll(Arrays.asList(cl1));
 		addressRepository.saveAll(Arrays.asList(ad1, ad2));
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+		
+		Order_ ord1 = new Order_(null, sdf.parse("30/09/2017 10:32"), cl1, ad1);
+		Order_ ord2 = new Order_(null, sdf.parse("10/10/2017 19:35"), cl1, ad2);
+		
+		cl1.getOrders().addAll(Arrays.asList(ord1, ord1));
+		
+		Payment pay1 = new CardPayment(null, PaymentStatus.QUITADO, ord1, 6);
+		ord1.setPayment(pay1);
+		
+		Payment pay2 = new InvoicePayment(null, PaymentStatus.PENDENTE, ord2, sdf.parse("20/10/2017 00:00"), null);
+		ord2.setPayment(pay2);
+		
+		orderRepository.saveAll(Arrays.asList(ord1, ord2));
+		paymentRepository.saveAll(Arrays.asList(pay1, pay2));
 		
 	}
 
