@@ -2,7 +2,9 @@ package com.jr.curso_mc.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -32,6 +35,9 @@ public class Product implements Serializable {
 	)
 	private List<Category> categories = new ArrayList<>();
 	
+	@OneToMany(mappedBy="id.product")
+	private Set<OrderItem> items = new HashSet<>();
+	
 	public Product() {
 	}
 
@@ -40,6 +46,14 @@ public class Product implements Serializable {
 		this.id = id;
 		this.name = name;
 		this.price = price;
+	}
+	
+	public List<Order_> getOrders() {
+		List<Order_> list = new ArrayList<>();
+		for (OrderItem x : items) {
+			list.add(x.getOrder());
+		}
+		return list;
 	}
 
 	public Integer getId() {
@@ -72,6 +86,15 @@ public class Product implements Serializable {
 
 	public void setCategories(List<Category> categories) {
 		this.categories = categories;
+	}
+
+	public Set<OrderItem> getItems() {
+		return items;
+	}
+	
+	@OneToMany(mappedBy="id.product")
+	public void setOrders(Set<OrderItem> items) {
+		this.items = items;
 	}
 
 	@Override
