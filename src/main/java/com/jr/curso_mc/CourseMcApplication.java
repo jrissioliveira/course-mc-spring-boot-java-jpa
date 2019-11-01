@@ -93,7 +93,7 @@ public class CourseMcApplication implements CommandLineRunner {
 		City c3 = new City(null, "Campinas", sta2);
 		
 		sta1.getCities().addAll(Arrays.asList(c1));
-		sta1.getCities().addAll(Arrays.asList(c2, c3));
+		sta2.getCities().addAll(Arrays.asList(c2, c3));
 		
 		stateRepository.saveAll(Arrays.asList(sta1, sta2));
 		cityRepository.saveAll(Arrays.asList(c1, c2, c3));

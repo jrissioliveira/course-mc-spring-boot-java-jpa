@@ -26,19 +26,19 @@ public class InvoicePayment extends Payment {
 		this.dueDate = dueDate;
 	}
 
-	public Date getDataVencimento() {
+	public Date getDueDate() {
 		return dueDate;
 	}
 
-	public void setDataVencimento(Date dueDate) {
+	public void setDueDate(Date dueDate) {
 		this.dueDate = dueDate;
 	}
 
-	public Date getDataPagamento() {
+	public Date getPayDateo() {
 		return payDateo;
 	}
 
-	public void setDataPagamento(Date payDateo) {
+	public void setPayDateo(Date payDateo) {
 		this.payDateo = payDateo;
 	}	
 	
